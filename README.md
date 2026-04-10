@@ -6,7 +6,7 @@ Portfolio-style lab for **volumetric (L3)**, **protocol abuse (L4)**, and **appl
 
 - How common attacks look **on the wire** (SYN flood, UDP volumetric, DNS amplification pattern, HTTP GET and slow-header patterns, crafted BGP UPDATEs).
 - How to turn a PCAP into **metrics** (rates, ratios, protocol mix, DNS query types, BGP AS paths).
-- **Threshold-based detection** with explicit evidence fields (good for explaining logic in interviews).
+- **Threshold-based detection** with explicit evidence fields
 - **Suggested mitigations** as commented config snippets—**never auto-applied**.
 
 ## Pipeline
@@ -51,11 +51,6 @@ BGP example:
 .venv/bin/python analysis/anomaly_detector.py /tmp/bgp_traffic.json --bgp-analysis /tmp/bgp.json -o /tmp/bgp_alerts.json
 ```
 
-## Interview notes (detection math)
-
-- **SYN:ACK ratio**: Legitimate handshakes produce comparable **SYN** and **SYN-ACK** counts for new flows. A SYN flood sends many **SYN-only** segments; if the capture is at the victim, you may see huge SYN volume and few SYN-ACKs from the target, so the ratio **SYN-only / SYN-ACK** explodes.
-- **DNS amplification**: Compare **average DNS query packet size** to **average DNS response packet size** at the resolver/victim edge. A large ratio suggests amplification (this lab exaggerates sizes for teaching).
-- **L7 floods**: **GET/POST-shaped** payloads raise `http_request_like` rates. **Slowloris-style** traffic shows many **small PSH payloads** toward web ports without a high full-request rate—see `l7_small_tcp_payload_count` in the profile JSON.
 
 ## Repository layout
 
